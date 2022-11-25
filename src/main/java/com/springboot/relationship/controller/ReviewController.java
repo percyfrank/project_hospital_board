@@ -1,6 +1,7 @@
 package com.springboot.relationship.controller;
 
 import com.springboot.relationship.domain.dto.ReviewReadResponse;
+import com.springboot.relationship.domain.dto.ReviewResponse;
 import com.springboot.relationship.domain.entity.Review;
 
 import com.springboot.relationship.service.ReviewService;
@@ -24,10 +25,10 @@ public class ReviewController {
      * 리뷰(id)로 조회하는 기능
      */
     @GetMapping("{id}")
-    public ResponseEntity<ReviewReadResponse> getEachReview(@PathVariable Integer id) {
+    public ResponseEntity<ReviewResponse> getEachReview(@PathVariable Integer id) {
         Review review = reviewService.getReview(id);
-        ReviewReadResponse reviewReadResponse = ReviewReadResponse.of(review);
-        return ResponseEntity.ok().body(reviewReadResponse);
+        ReviewResponse reviewResponse = ReviewResponse.of(review);
+        return ResponseEntity.ok().body(reviewResponse);
     }
 
     
