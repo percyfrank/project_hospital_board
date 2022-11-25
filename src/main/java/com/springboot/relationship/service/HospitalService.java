@@ -1,0 +1,70 @@
+package com.springboot.relationship.service;
+
+import com.springboot.relationship.domain.dto.HospitalResponse;
+import com.springboot.relationship.domain.dto.ReviewResponse;
+import com.springboot.relationship.domain.entity.Hospital;
+import com.springboot.relationship.domain.entity.Review;
+import com.springboot.relationship.repository.HospitalRepository;
+import com.springboot.relationship.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class HospitalService {
+
+    private final HospitalRepository hospitalRepository;
+    private final ReviewRepository reviewRepository;
+
+    public HospitalService(HospitalRepository hospitalRepository, ReviewRepository reviewRepository) {
+        this.hospitalRepository = hospitalRepository;
+        this.reviewRepository = reviewRepository;
+    }
+
+    public List<HospitalResponse> findAllHospital(Pageable pageable) {
+        Page<Hospital> hospitals = hospitalRepository.findAll(pageable);
+        List<HospitalResponse> hospitalList = hospitals.stream()
+                .map(hospital -> HospitalResponse.of(hospital)).collect(Collectors.toList());
+        return hospitalList;
+    }
+
+    public List<ReviewResponse> findEachHospitalReviews(Pageable pageable) {
+        Page<Review> reviews = reviewRepository.findAll(pageable);
+        List<ReviewResponse> reviewResponses = reviews.stream()
+                .map(review -> ReviewResponse.of(review)).collect(Collectors.toList());
+
+        return reviewResponses;
+    }
+
+    public HospitalResponse findHospitalReview(Integer id) {
+
+        Hospital hospital = hospitalRepository.findById(id).get();
+
+        List<Review> hospitalReviewList = hospital.getReviewList();
+
+        List<ReviewResponse> finalHospitalReviewList = hospitalReviewList.stream()
+                .map(hospitalReview -> ReviewResponse.of(hospitalReview)).collect(Collectors.toList());
+
+        return HospitalResponse.builder()
+                .id(hospital.getId())
+                .name(hospital.getHospitalName())
+                .roadNameAddress(hospital.getRoadNameAddress())
+                .reviewResponses(finalHospitalReviewList)
+                .build();
+
+    }
+
+    //    public List<ReviewResponse> findHospitalReview(Integer id) {
+//
+//        Hospital hospital = hospitalRepository.findById(id).get();
+//        List<Review> hospitalReviewList = hospital.getReviewList();
+//        List<ReviewResponse> finalHospitalReviewList = hospitalReviewList.stream()
+//                .map(hospitalReview -> ReviewResponse.of(hospitalReview)).collect(Collectors.toList());
+//
+//        return finalHospitalReviewList;
+//    }
+
+}
