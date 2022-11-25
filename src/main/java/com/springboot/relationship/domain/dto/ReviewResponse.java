@@ -17,7 +17,7 @@ public class ReviewResponse {
     private String reviewTitle;
     private String reviewContent;
     private String reviewPatientName;
-    private String hospitalName;
+//    private String hospitalName;
 //    private Hospital hospital;
 
     public static ReviewResponse of(Review review) {
@@ -26,7 +26,7 @@ public class ReviewResponse {
                 .reviewTitle(review.getTitle())
                 .reviewContent(review.getContent())
                 .reviewPatientName(review.getPatientName())
-                .hospitalName(review.getHospital().getHospitalName())
+//                .hospitalName(review.getHospital().getHospitalName())
 //                .hospital(review.getHospital())
                 .build();
     }
