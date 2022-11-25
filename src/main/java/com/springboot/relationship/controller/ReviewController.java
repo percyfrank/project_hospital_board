@@ -34,6 +34,10 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewResponse);
     }
 
+
+    /**
+     * 모든 리뷰 조회 기능
+     */
     @GetMapping("")
     public ResponseEntity<List<ReviewReadResponse>> getAllReview(Pageable pageable) {
         return ResponseEntity.ok().body(reviewService.findAllReview(pageable));
