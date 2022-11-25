@@ -8,11 +8,13 @@ import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.repository.HospitalRepository;
 import com.springboot.relationship.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -51,7 +53,7 @@ public class ReviewService {
     }
 
 
-    public Review getReview(Integer id) {
+    public Review findReview(Integer id) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 id가 없습니다."));
         return review;
@@ -59,5 +61,12 @@ public class ReviewService {
 //        Optional<Review> optionalReview = reviewRepository.findById(id);
 //        optionalReview.isEmpty();
 //        optionalReview.orElseThrow();
+    }
+
+    public List<ReviewReadResponse> findAllReview(Pageable pageable) {
+        Page<Review> reviews = reviewRepository.findAll(pageable);
+        List<ReviewReadResponse> reviewList = reviews.stream()
+                .map(review -> ReviewReadResponse.of(review)).collect(Collectors.toList());
+        return reviewList;
     }
 }
