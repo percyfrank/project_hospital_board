@@ -1,6 +1,7 @@
 package com.springboot.relationship.service;
 
 import com.springboot.relationship.domain.dto.HospitalResponse;
+import com.springboot.relationship.domain.dto.ReviewReadResponse;
 import com.springboot.relationship.domain.dto.ReviewResponse;
 import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
@@ -31,12 +32,12 @@ public class HospitalService {
         return hospitalList;
     }
 
-    public List<ReviewResponse> findEachHospitalReviews(Pageable pageable) {
+    public List<ReviewReadResponse> findEachHospitalReviews(Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAll(pageable);
-        List<ReviewResponse> reviewResponses = reviews.stream()
-                .map(review -> ReviewResponse.of(review)).collect(Collectors.toList());
+        List<ReviewReadResponse> reviewReadResponses = reviews.stream()
+                .map(review -> ReviewReadResponse.of(review)).collect(Collectors.toList());
 
-        return reviewResponses;
+        return reviewReadResponses;
     }
 
     public HospitalResponse findHospitalReview(Integer id) {

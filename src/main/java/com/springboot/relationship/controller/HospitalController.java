@@ -1,9 +1,6 @@
 package com.springboot.relationship.controller;
 
-import com.springboot.relationship.domain.dto.HospitalResponse;
-import com.springboot.relationship.domain.dto.ReviewCreateRequest;
-import com.springboot.relationship.domain.dto.ReviewCreateResponse;
-import com.springboot.relationship.domain.dto.ReviewResponse;
+import com.springboot.relationship.domain.dto.*;
 import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.service.HospitalService;
@@ -41,7 +38,7 @@ public class HospitalController {
      * 모든 리뷰 정보와 해당 리뷰가 작성된 병원 이름이 같이 나오는 기능
      */
     @GetMapping("/reviews")
-    public ResponseEntity<List<ReviewResponse>> eachReviewWithHospital(Pageable pageable) {
+    public ResponseEntity<List<ReviewReadResponse>> eachReviewWithHospital(Pageable pageable) {
         return ResponseEntity.ok().body(hospitalService.findEachHospitalReviews(pageable));
     }
 
