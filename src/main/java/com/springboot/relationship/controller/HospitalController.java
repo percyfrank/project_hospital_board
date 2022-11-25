@@ -27,15 +27,15 @@ public class HospitalController {
 
 
     /**
-     * 병원 정보 나오는 기능
+     * 모든 병원 정보 조회 기능
      */
     @GetMapping("")
-    public ResponseEntity<List<HospitalResponse>> hospitalList(Pageable pageable) {
+    public ResponseEntity<List<HospitalReadResponse>> hospitalList(Pageable pageable) {
         return ResponseEntity.ok().body(hospitalService.findAllHospital(pageable));
     }
 
     /**
-     * 모든 리뷰 정보와 해당 리뷰가 작성된 병원 이름이 같이 나오는 기능
+     * 모든 리뷰 조회 기능 - 생각해보니 여기 없어도 되는거 아닌가?...
      */
     @GetMapping("/reviews")
     public ResponseEntity<List<ReviewReadResponse>> eachReviewWithHospital(Pageable pageable) {
