@@ -1,6 +1,5 @@
 package com.springboot.relationship.domain.dto;
 
-import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

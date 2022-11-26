@@ -3,7 +3,6 @@ package com.springboot.relationship.service;
 import com.springboot.relationship.domain.dto.ReviewCreateRequest;
 import com.springboot.relationship.domain.dto.ReviewCreateResponse;
 import com.springboot.relationship.domain.dto.ReviewReadResponse;
-import com.springboot.relationship.domain.dto.ReviewResponse;
 import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.repository.HospitalRepository;

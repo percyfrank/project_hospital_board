@@ -1,8 +1,6 @@
 package com.springboot.relationship.controller;
 
 import com.springboot.relationship.domain.dto.*;
-import com.springboot.relationship.domain.entity.Hospital;
-import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.service.HospitalService;
 import com.springboot.relationship.service.ReviewService;
 import lombok.extern.slf4j.Slf4j;
