@@ -16,18 +16,14 @@ public class ReviewResponse {
     private Integer reviewId;
     private String reviewTitle;
     private String reviewContent;
-    private String reviewPatientName;
-//    private String hospitalName;
-//    private Hospital hospital;
+    private String reviewOwner;
 
     public static ReviewResponse of(Review review) {
         return ReviewResponse.builder()
                 .reviewId(review.getId())
                 .reviewTitle(review.getTitle())
                 .reviewContent(review.getContent())
-                .reviewPatientName(review.getPatientName())
-//                .hospitalName(review.getHospital().getHospitalName())
-//                .hospital(review.getHospital())
+                .reviewOwner(review.getPatientName())
                 .build();
     }
 }
