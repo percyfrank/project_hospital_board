@@ -8,6 +8,7 @@ import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.repository.HospitalRepository;
 import com.springboot.relationship.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
     private final ReviewRepository reviewRepository;
-
-    public HospitalService(HospitalRepository hospitalRepository, ReviewRepository reviewRepository) {
-        this.hospitalRepository = hospitalRepository;
-        this.reviewRepository = reviewRepository;
-    }
 
     public List<HospitalReadResponse> findAllHospital(Pageable pageable) {
         Page<Hospital> hospitals = hospitalRepository.findAll(pageable);
@@ -33,7 +30,7 @@ public class HospitalService {
         return hospitalList;
     }
 
-    public List<ReviewReadResponse> findEachHospitalReviews(Pageable pageable) {
+    public List<ReviewReadResponse> findAllReview(Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAll(pageable);
         List<ReviewReadResponse> reviewReadResponses = reviews.stream()
                 .map(review -> ReviewReadResponse.of(review)).collect(Collectors.toList());
@@ -41,32 +38,12 @@ public class HospitalService {
         return reviewReadResponses;
     }
 
-    public HospitalResponse findHospitalReview(Integer id) {
+    public HospitalResponse findReviewByHospitalId(Integer id) {
+        // hospital 조회
+        Hospital hospital = hospitalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원을 찾을 수 없습니다."));
 
-        Hospital hospital = hospitalRepository.findById(id).get();
-
-        List<Review> hospitalReviewList = hospital.getReviewList();
-
-        List<ReviewResponse> finalHospitalReviewList = hospitalReviewList.stream()
-                .map(hospitalReview -> ReviewResponse.of(hospitalReview)).collect(Collectors.toList());
-
-        return HospitalResponse.builder()
-                .id(hospital.getId())
-                .name(hospital.getHospitalName())
-                .roadNameAddress(hospital.getRoadNameAddress())
-                .reviewResponses(finalHospitalReviewList)
-                .build();
-
+        return HospitalResponse.of(hospital);
     }
-
-    //    public List<ReviewResponse> findHospitalReview(Integer id) {
-//
-//        Hospital hospital = hospitalRepository.findById(id).get();
-//        List<Review> hospitalReviewList = hospital.getReviewList();
-//        List<ReviewResponse> finalHospitalReviewList = hospitalReviewList.stream()
-//                .map(hospitalReview -> ReviewResponse.of(hospitalReview)).collect(Collectors.toList());
-//
-//        return finalHospitalReviewList;
-//    }
 
 }

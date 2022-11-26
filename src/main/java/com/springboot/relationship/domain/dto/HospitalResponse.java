@@ -4,6 +4,7 @@ import com.springboot.relationship.domain.entity.Hospital;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -21,6 +22,9 @@ public class HospitalResponse {
                 .id(hospital.getId())
                 .name(hospital.getHospitalName())
                 .roadNameAddress(hospital.getRoadNameAddress())
+                .reviewResponses(hospital.getReviewList().stream().map(
+                                (review) -> ReviewResponse.of(review)).collect(Collectors.toList()))
+//                .reviewResponses(hospital.getReviewList().stream().map(ReviewResponse::of).collect(Collectors.toList()))
                 .build();
     }
 }

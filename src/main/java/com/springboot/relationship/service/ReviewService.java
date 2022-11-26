@@ -8,6 +8,7 @@ import com.springboot.relationship.domain.entity.Hospital;
 import com.springboot.relationship.domain.entity.Review;
 import com.springboot.relationship.repository.HospitalRepository;
 import com.springboot.relationship.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final HospitalRepository hospitalRepository;
 
-    public ReviewService(ReviewRepository reviewRepository, HospitalRepository hospitalRepository) {
-        this.reviewRepository = reviewRepository;
-        this.hospitalRepository = hospitalRepository;
-    }
 
      public ReviewCreateResponse createReview(ReviewCreateRequest dto) {
         // 리뷰엔 hospital이 들어가있기 때문에 먼저 hospital 조회
@@ -52,21 +50,27 @@ public class ReviewService {
 
     }
 
-
     public Review findReview(Integer id) {
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("해당 id가 없습니다."));
-        return review;
-
-//        Optional<Review> optionalReview = reviewRepository.findById(id);
-//        optionalReview.isEmpty();
-//        optionalReview.orElseThrow();
+        // 리포에서 찾은 데이터가 null일 경우 RuntimeException 에외를 던지고,
+        // 데이터가 있다면 review 엔티티를 꺼낸다.
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 리뷰가 없습니다."));
     }
 
     public List<ReviewReadResponse> findAllReview(Pageable pageable) {
         Page<Review> reviews = reviewRepository.findAll(pageable);
-        List<ReviewReadResponse> reviewList = reviews.stream()
+
+        return reviews.stream()
                 .map(review -> ReviewReadResponse.of(review)).collect(Collectors.toList());
-        return reviewList;
+    }
+
+    public List<ReviewReadResponse> findAllByHospitalId(Integer hospitalId) {
+         // hospitalId로 hospital 가져오기
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원을 찾을 수 없습니다."));
+
+        // Review리포에서 hostpital entity로 리뷰 정보 가져오기
+        return reviewRepository.findByHospital(hospital).stream()
+                .map(review -> ReviewReadResponse.of(review)).collect(Collectors.toList());
     }
 }

@@ -35,15 +35,15 @@ public class HospitalController {
     }
 
     /**
-     * 모든 리뷰 조회 기능 - 생각해보니 여기 없어도 되는거 아닌가?...
+     * 모든 리뷰 조회 기능 - ReviewController에 있는거랑 뭐가 다른걸까...
      */
     @GetMapping("/reviews")
-    public ResponseEntity<List<ReviewReadResponse>> eachReviewWithHospital(Pageable pageable) {
-        return ResponseEntity.ok().body(hospitalService.findEachHospitalReviews(pageable));
+    public ResponseEntity<List<ReviewReadResponse>> ReviewList(Pageable pageable) {
+        return ResponseEntity.ok().body(hospitalService.findAllReview(pageable));
     }
 
     /**
-     * 리뷰 등록 기능
+     * 리뷰 등록 기능 - 이것도 ReviewController에 있어야 하는거 아닌가?..
      */
     @PostMapping("/{id}/reviews")
     public ResponseEntity<ReviewCreateResponse> addReview(@PathVariable Integer id,
@@ -54,21 +54,16 @@ public class HospitalController {
     /**
      * 특정 병원(id)의 리뷰만 조회하는 기능
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<HospitalResponse> hospitalReviewList(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(hospitalService.findHospitalReview(id));
+    @GetMapping("/{hospitalId}/reviews")
+    public ResponseEntity<List<ReviewReadResponse>> hospitalReview(@PathVariable("hospitalId") Integer id) {
+        return ResponseEntity.ok().body(reviewService.findAllByHospitalId(id));
     }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<List<ReviewResponse>> hospitalReviewList(@PathVariable Integer id) {
-//        return ResponseEntity.ok().body(hospitalService.findHospitalReview(id));
-//    }
 
     /**
-     * 특정 리뷰(id)로 병원정보까지 조회하는 기능
+     * 특정 병원의 리뷰를 병원 정보와 함께 조회하는 기능
      */
-//    @GetMapping("/reviews/{id}")
-//    public ResponseEntity<ReviewResponse> reviewWithHospital() {
-//
-//    }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<HospitalResponse> hospitalWithReview(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok().body(hospitalService.findReviewByHospitalId(id));
+    }
 }
